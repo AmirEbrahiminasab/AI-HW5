@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gigoole</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="home">
+  <main class="center">
+    <div class="logo-wrap">
+      <img class="logo" src="{{ url_for('static', filename='gigoole_logo.svg') }}" alt="Gigoole" />
+    </div>
+
+    <form class="search-form" action="/search" method="post">
+      <div class="searchbox">
+        <span class="icon">🔎</span>
+        <input
+          class="search-input"
+          type="text"
+          name="q"
+          placeholder="Search images with text..."
+          autofocus
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="controls">
+        <div class="topk">
+          <label for="topk">Results</label>
+          <input id="topk" name="topk" type="number" min="1" max="50" value="{{ topk or 8 }}">
+        </div>
+        <button class="btn" type="submit">Gigoole Search</button>
+      </div>
+
+      {% if error %}
+        <p class="error">{{ error }}</p>
+      {% endif %}
+    </form>
+
+    <footer class="footer">
+      <span>Local CLIP-like retrieval demo • Powered by FAISS</span>
+    </footer>
+  </main>
+</body>
+</html>

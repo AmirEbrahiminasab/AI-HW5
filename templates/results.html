@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gigoole - {{ query }}</title>
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="results">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <img class="brand-logo" src="{{ url_for('static', filename='gigoole_logo.svg') }}" alt="Gigoole" />
+    </a>
+
+    <form class="top-search" action="/search" method="post">
+      <input class="top-input" type="text" name="q" value="{{ query }}" autocomplete="off" />
+      <input type="hidden" name="topk" value="{{ topk }}">
+      <button class="btn small" type="submit">Search</button>
+    </form>
+  </header>
+
+  <main class="container">
+    <div class="meta">
+      <div class="query">Results for: <span>{{ query }}</span></div>
+      <div class="hint">Tip: use more descriptive phrases (objects, actions, place).</div>
+    </div>
+
+    <section class="grid">
+      {% for (img_url, score, idx) in results %}
+        <article class="card">
+          <div class="imgwrap">
+            <img src="{{ img_url }}" alt="result {{ loop.index }}" loading="lazy" />
+          </div>
+          <div class="cardinfo">
+            <div class="line">image_idx: <b>{{ idx }}</b></div>
+            <div class="line">score: <b>{{ "%.4f"|format(score) }}</b></div>
+          </div>
+        </article>
+      {% endfor %}
+    </section>
+  </main>
+</body>
+</html>
