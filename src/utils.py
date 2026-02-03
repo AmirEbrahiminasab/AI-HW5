@@ -1,5 +1,4 @@
 # utils.py
-# You can add utility functions to this file as you wish, but it's not mandatory 
 import json
 import os
 import random
@@ -20,6 +19,16 @@ def set_seed(seed: int) -> None:
 @torch.no_grad()
 def l2_normalize(x: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
     return x / (x.norm(dim=-1, keepdim=True) + eps)
+
+
+def mean_pooling(last_hidden_state: torch.Tensor, attention_mask: torch.Tensor) -> torch.Tensor:
+    # last_hidden_state: [B, T, H]
+    # attention_mask:   [B, T]
+    mask = attention_mask.unsqueeze(-1).type_as(last_hidden_state)  # [B, T, 1]
+    summed = (last_hidden_state * mask).sum(dim=1)                  # [B, H]
+    denom = mask.sum(dim=1).clamp(min=1e-6)                         # [B, 1]
+    return summed / denom
+
 
 def save_json(path: str, obj: Any) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
