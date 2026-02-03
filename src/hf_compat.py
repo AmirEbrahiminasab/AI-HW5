@@ -83,6 +83,6 @@ def load_dataset_compat(
             return train_ds
         if split.lower() in {"validation", "val"}:
             return val_ds
-        return test_ds  
+        return test_ds  # "test"
 
     raise ValueError(f'Unknown split "{split}". Available splits: {keys}')

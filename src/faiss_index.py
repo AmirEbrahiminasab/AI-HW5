@@ -18,12 +18,14 @@ def main():
 
     os.makedirs(args.out_dir, exist_ok=True)
 
-    embeds = np.load(args.image_embeds, mmap_mode="r") 
+    embeds = np.load(args.image_embeds, mmap_mode="r")  # [N, D] float16
     N, D = embeds.shape
     print(f"Loaded embeds: {args.image_embeds}  shape={embeds.shape} dtype={embeds.dtype}")
 
+    # FAISS expects float32
     xb = np.asarray(embeds, dtype=np.float32)
 
+    # Ensure normalized for inner-product = cosine
     norms = np.linalg.norm(xb, axis=1, keepdims=True) + 1e-12
     xb = xb / norms
 
